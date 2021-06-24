@@ -1,0 +1,60 @@
+たくさんのデータを保存したいならDB
+アプリケーションサーバーとDBサーバー
+
+adminのUTFは並び替えとかしたいときの言葉のルールになる
+構造　テーブルの中身が見れる
+表示　内容が表示される
+
+テーブル（わかりやすい方がいい） ＝ シート
+カラム（項目）
+
+
+id絶対データ一個はとってくるために指定するやつ
+プライマリーとAI　チェック入れると自動で数字をとってくれる　必ずつける
+
+データ型はデータ入れるとき必ず必要　数字はINT　文字VARCHANT
+フレームワークの自動関数でSQL起動は搭載されていることも
+
+-- 例 --
+INSERT INTO テーブル名(カラム1, カラム2, ...)VALUES(値1, 値2, ...);
+INSERT INTO gs_table (id, name, email, detail, created_at)
+VALUES(NULL, 'gs_00', 'gsf00@gs.com', 'test', sysdate());
+--------
+データ入れるとき　id 自動で入るからNULL(=空)
+sysdate() 自動でそんときの日時
+何もデータ入れない時もNULLを入れる。項目の全てを何か記入する
+
+-- SELECT文の基本構造 --
+SELECT 表示するカラム名 FROM テーブル名;
+-- 例 --
+SELECT * FROM gs_table; -- 「*」で全て指定
+SELECT name FROM gs_table; -- 1つのカラムを指定
+SELECT name, email FROM gs_table; -- 複数カラム指定
+SELECT * FROM gs_table WHERE name='gs_00'; -- ※「WHERE」を使用して値の条件を指定できる
+
+id >= 1 など演算子も使える
+id = 1 は =がひとつ
+
+email LIKE 'gs%'; LIKEで曖昧検索 gsが先についてあとはなんでもいい（%）
+
+-- ソート
+SELECT * FROM gs_table ORDER BY id DESC;
+SELECT * FROM gs_table ORDER BY name, email ASC;
+-- ※DESC→降順,ASC→昇順
+-- 表示件数の制限
+SELECT * FROM gs_table LIMIT 5; -- 5件のみ表示
+-- 上記の組み合わせ
+SELECT * FROM gs_table ORDER BY id DESC LIMIT 5;
+ニュースとかで最新の５件だけ表示するとかに使われる
+--------
+
+前のｔｘｔファイルにデータが入っていたのがDBに変わる
+
+DBは全て項目埋めないといけない
+
+DBカラムに :todo=バインド変数 :ころんでバインド変数になる
+↑ハックから守る
+
+課題
+これで完成！にはならないので、検証してどんどん改善していくプロダクト
+プロトタイプとして使ってもらって変えていく
