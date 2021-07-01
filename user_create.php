@@ -1,51 +1,34 @@
 <?php
+
+
 // ! はこれ（それ以降に条件書いて）ないですよね？
 if (
-  !isset($_POST['name']) || $_POST['name'] == '' ||
+  !isset($_POST['username']) || $_POST['username'] == '' ||
   !isset($_POST['area']) || $_POST['area'] == '' ||
-  !isset($_POST['age']) || $_POST['age'] == '' ||
-  !isset($_POST['likes']) || $_POST['likes'] == '' ||
-  !isset($_POST['want']) || $_POST['want'] == ''
+  !isset($_POST['likes']) || $_POST['likes'] == '' 
 ) {
   exit('ParamError');
 }
 
-$name = $_POST['name'];
+
+$username = $_POST['username'];
 $area = $_POST['area'];
-$age = $_POST['age'];
 $likes = $_POST['likes'];
-$want = $_POST['want'];
+include('userfunctions.php'); // 関数を記述したファイルの読み込み
 
-// DBにアプリケーションサーバーをつなげる文
-// 毎回使うやつ
-$dbn = 'mysql:dbname=d08_sotsusei;charset=utf8;port=3306;host=localhost';
-$user = 'root';
-$pwd = '';
-
-// DB接続
-// ＃＃＃＃毎回使うやつここから
-try {
-  $pdo = new PDO($dbn, $user, $pwd);
-} catch (PDOException $e) {
-  echo json_encode(["db error" => "{$e->getMessage()}"]);
-  exit();
-}
-// db error が出たらDB接続が問題あり
-
-
-$sql = 'INSERT INTO user_table(id, name, area, age, likes, want, created_date, updated_date) VALUES(NULL, :name, :area, :age, :likes, :want, sysdate(), sysdate())';
-// 一番間違ってる可能性ある
-// バインド変数(：)コロンで書く
-// ここまで＃＃＃＃
+// DB接続の関数
+$pdo = connect_to_db();
+// var_dump($pdo);
+// exit();
+// $sql = 'INSERT INTO user_table(id, username, area, likes, created_at, updated_at) VALUES(NULL, :username, :area, :likes, sysdate(), sysdate())';
+$sql = 'INSERT INTO `user_table`(`id`, `username`, `area`, `likes`, `created_date`, `updated_date`) VALUES (NULL,:username,:area,:likes,sysdate(),sysdate())';
 
 // 変数をバインド変数に格納
 // 毎回使うやつ
 $stmt = $pdo->prepare($sql);
-$stmt->bindValue(':name', $name, PDO::PARAM_STR);
+$stmt->bindValue(':username', $username, PDO::PARAM_STR);
 $stmt->bindValue(':area', $area, PDO::PARAM_STR);
-$stmt->bindValue(':age', $age, PDO::PARAM_STR);
 $stmt->bindValue(':likes', $likes, PDO::PARAM_STR);
-$stmt->bindValue(':want', $want, PDO::PARAM_STR);
 
 $status = $stmt->execute(); // SQLを実行
 
