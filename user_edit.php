@@ -53,7 +53,7 @@ if ($status == false) {
           <a href="user_read.php">ユーザー一覧</a>
           <div class="form-group">
             <label>お名前</label>
-            <input type="text" class="form-control" name="username" autocomplete="name" value="<?= $result['name'] ?>">
+            <input type="text" class="form-control" name="username" autocomplete="name" value="<?= $result['username'] ?>">
           </div>
 
           <div class="form-group">
